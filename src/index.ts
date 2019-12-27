@@ -1,4 +1,5 @@
 import express from "express";
+import logger from "./logger";
 const app = express();
 const { EXPRESS_LISTEN_PORT: port } = process.env; // default port to listen
 
@@ -9,5 +10,8 @@ app.get("/", (req: any, res: any) => {
 
 // start the Express server
 app.listen(port, () => {
-    // console.log(`server started at http://localhost:${port}`);
+    logger.log({
+        level: "info",
+        message: `server started at http://localhost:${port}`
+    });
 });

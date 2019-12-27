@@ -2,17 +2,24 @@
   "name": "lana-ecommerce-api",
   "version": "0.0.1",
   "description": "Demonstration e-commerce API with discount model",
-  "main": "./src",
+  "main": "dist/index.js",
   "scripts": {
-    "start:dev": "node node_modules/nodemon/bin/nodemon.js -L",
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "build:watch": "node node_modules/nodemon/bin/nodemon.js",
+    "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
   },
   "dependencies": {
-    "esm": "^3.2.25"
+    "@types/express": "^4.17.2",
+    "@types/node": "^13.1.1",
+    "express": "^4.17.1"
   }
 }

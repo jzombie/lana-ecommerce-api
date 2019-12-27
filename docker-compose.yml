@@ -18,7 +18,7 @@ services:
       MYSQL_PASSWORD: example
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
-    command: ["npm", "run", "start:dev"]
+    command: ["npm", "run", "build:watch"]
     networks:
       - lana-service-network
     ports:

@@ -1,0 +1,38 @@
+version: '3.3'
+
+networks:
+  lana-service-network:
+
+services:
+  backend:
+    build: ./
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    volumes:
+      - ./:/app # Only during development
+    environment:
+      EXPRESS_LISTEN_PORT: 8443
+      MYSQL_DB: proto
+      MYSQL_USERNAME: root
+      MYSQL_PASSWORD: example
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+    command: ["npm", "run", "start:dev"]
+    networks:
+      - lana-service-network
+    ports:
+      - 8443:8443
+
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    ports:
+      - 8084:3306
+    networks:
+      - lana-service-network
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_USER: sequelize_test
+      MYSQL_PASSWORD: sequelize_test

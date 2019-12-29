@@ -13,7 +13,7 @@ services:
       - ./:/app # Only during development
     environment:
       EXPRESS_LISTEN_PORT: 8443
-      MYSQL_DB: proto
+      MYSQL_DB: store
       MYSQL_USERNAME: root
       MYSQL_PASSWORD: example
       MYSQL_HOST: mysql

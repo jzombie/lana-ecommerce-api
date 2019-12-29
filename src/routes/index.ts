@@ -1,20 +1,20 @@
 import express from "express";
-import Product from "../classes/Product";
+import Product, { IProductDetail } from "../classes/Product";
 import logger from "../logger";
 const router = express.Router();
 
 router.get("/product/:sku", async (req: express.Request, res: express.Response) => {
-  handleRoute(req, res, async () => {
-    const sku = req.params.sku;
-    const product = new Product(sku);
+  handleRoute(req, res, async (): Promise<IProductDetail> => {
+    const sku: string = req.params.sku;
+    const product: Product = new Product(sku);
 
     return product.fetchDetail();
   });
 });
 
 router.get("/products", async (req: express.Request, res: express.Response) => {
-  handleRoute(req, res, async () => {
-    const products = await Product.fetchAllProducts();
+  handleRoute(req, res, async (): Promise<IProductDetail[]> => {
+    const products: Product[] = await Product.fetchAllProducts();
 
     return Promise.all(
       products.map(async (product) => await product.fetchDetail())
@@ -37,7 +37,7 @@ const handleRoute = async (
   try {
     logger.info(`HTTP Request | ${req.method} | ${req.url}`);
 
-    const result = await routeHandler();
+    const result: any = await routeHandler();
 
     if (typeof result === "object") {
       res.json(result);
@@ -45,8 +45,8 @@ const handleRoute = async (
       throw new Error(`Unhandled response type: ${typeof result}`);
     }
   } catch (exc) {
-    const errMsg = exc.message || exc.toString();
-    const errName = exc.name || null;
+    const errMsg: string = exc.message || exc.toString();
+    const errName: string = exc.name || null;
 
     logger.error(errMsg);
 

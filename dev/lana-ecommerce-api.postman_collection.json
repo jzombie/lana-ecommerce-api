@@ -1,0 +1,277 @@
+{
+	"info": {
+		"_postman_id": "ff918284-5f99-4d88-b43f-65361ce1ba45",
+		"name": "lana-ecommerce-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/products (Retrieve all products)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/products",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/product/120P90 (Retrieve Google Home)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/product/120P90",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"product",
+						"120P90"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/product/234234 (Retrieve Raspberry Pi B)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/product/234234",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"product",
+						"234234"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/product/43N23P (Retrieve MacBook Pro)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/product/43N23P",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"product",
+						"43N23P"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/product/A304SD (Retrieve Alexa Speaker)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/product/A304SD",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"product",
+						"A304SD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart (Retrieve the cart contents)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart (Delete the cart)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/120P90/3 (Add 3 Google Homes)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/120P90/3",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"120P90",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/120P90/-1 (Remove a single Google Home)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/120P90/-1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"120P90",
+						"-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/A304SD/4 (Add 4 Alexa Speakers)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/A304SD/4",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"A304SD",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/A304SD/-1 (Remove a single Alexa Speaker)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/A304SD/-1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"A304SD",
+						"-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/43N23P (Add a single MacBook Pro)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/43N23P",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"43N23P"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/43N23P/-1 (Remove a single MacBook Pro)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/43N23P/-1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"43N23P",
+						"-1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/234234 (Add a single Raspberry Pi B)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/234234",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"234234"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/234234/-1 (Remove a single Raspberry Pi B)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/234234/-1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"234234",
+						"-1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

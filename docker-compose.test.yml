@@ -1,5 +1,7 @@
 version: '3.3'
 
+# Should extend docker-compose.yml
+
 services:
   backend:
     restart: "no"

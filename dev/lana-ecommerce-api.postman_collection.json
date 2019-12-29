@@ -142,19 +142,37 @@
 			"response": []
 		},
 		{
-			"name": "/cart/120P90/-1 (Remove a single Google Home)",
+			"name": "/cart/120P90 (Remove a single Google Home)",
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/cart/120P90/-1",
+					"raw": "{{base_url}}/cart/120P90",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"120P90"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/120P90/2 (Remove 2 Google Homes)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/120P90/2",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"cart",
 						"120P90",
-						"-1"
+						"2"
 					]
 				}
 			},
@@ -180,19 +198,37 @@
 			"response": []
 		},
 		{
-			"name": "/cart/A304SD/-1 (Remove a single Alexa Speaker)",
+			"name": "/cart/A304SD (Remove a single Alexa Speaker)",
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/cart/A304SD/-1",
+					"raw": "{{base_url}}/cart/A304SD",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"cart",
+						"A304SD"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/cart/A304SD/3 (Remove 3 Alexa Speakers)",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/cart/A304SD/3",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"cart",
 						"A304SD",
-						"-1"
+						"3"
 					]
 				}
 			},
@@ -217,19 +253,18 @@
 			"response": []
 		},
 		{
-			"name": "/cart/43N23P/-1 (Remove a single MacBook Pro)",
+			"name": "/cart/43N23P (Remove a single MacBook Pro)",
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/cart/43N23P/-1",
+					"raw": "{{base_url}}/cart/43N23P",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"cart",
-						"43N23P",
-						"-1"
+						"43N23P"
 					]
 				}
 			},
@@ -254,19 +289,18 @@
 			"response": []
 		},
 		{
-			"name": "/cart/234234/-1 (Remove a single Raspberry Pi B)",
+			"name": "/cart/234234 (Remove a single Raspberry Pi B)",
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/cart/234234/-1",
+					"raw": "{{base_url}}/cart/234234",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"cart",
-						"234234",
-						"-1"
+						"234234"
 					]
 				}
 			},

@@ -64,7 +64,8 @@ describe("Test Express app routes", () => {
         }
 
         expect(JSON.parse(res.text)).toEqual({
-          err: `Product with SKU "120P91__NOT_EXIST" does not exist.`
+          error: `Product with SKU "120P91__NOT_EXIST" is not a known product`,
+          errorType: 'UnknownProductError'
         });
 
         done();

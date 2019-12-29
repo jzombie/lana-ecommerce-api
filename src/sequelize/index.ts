@@ -49,6 +49,7 @@ async function initSequelize(shouldSync = false) {
             port: parseInt(MYSQL_PORT, 10)
           });
 
+          // Create database, if in development
           if (NODE_ENV === "development") {
             await connection.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`);
           }
@@ -85,10 +86,14 @@ async function initSequelize(shouldSync = false) {
       models[modelName] = model;
     }
 
+    // Create initial products, if in development
     if (NODE_ENV === "development") {
-      // Sync initial base products
       for (const baseProduct of baseProducts) {
-        await models.product.create(baseProduct).catch(() => logger.info(`Base product already exists with SKU: ${baseProduct.sku}`));
+        await models.product.create(
+          baseProduct).catch(
+            () => logger.info(`Base product already exists with SKU: ${baseProduct.sku}`
+          )
+        );
       }
     }
 

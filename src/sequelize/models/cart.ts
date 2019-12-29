@@ -1,16 +1,16 @@
-/* jshint indent: 2 */
+import { Sequelize } from "sequelize-typescript";
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = (sequelize: Sequelize, DataTypes: {[key: string]: any}) => {
   return sequelize.define("cart", {
     id: {
-      type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: false,
       autoIncrement: true,
-      primaryKey: true
+      primaryKey: true,
+      type: DataTypes.INTEGER(10).UNSIGNED
     },
     uuid: {
-      type: DataTypes.STRING(36),
-      allowNull: false
+      allowNull: false,
+      type: DataTypes.STRING(36)
     }
   }, {
     tableName: "cart",

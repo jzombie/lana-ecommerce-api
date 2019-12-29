@@ -13,6 +13,7 @@ services:
       - ./:/app # Only during development
     environment:
       NODE_ENV: development
+      EXPRESS_SESSION_SECRET: "keyboard cat"
       EXPRESS_LISTEN_PORT: 8080
       MYSQL_DB: store
       MYSQL_USERNAME: root

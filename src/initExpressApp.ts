@@ -14,9 +14,11 @@ const initExpressApp = async (): Promise<express.Application> => {
 
   const app = express();
 
+  const { EXPRESS_SESSION_SECRET } = process.env;
+
   // TODO: Replace this w/ hardened sess if utilizing in the real-world
   const sess = {
-    secret: "keyboard cat",
+    secret: EXPRESS_SESSION_SECRET,
     cookie: {}
   };
 

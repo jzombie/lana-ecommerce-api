@@ -19,7 +19,7 @@ const app = express_1.default();
 const { EXPRESS_LISTEN_PORT: port } = process.env; // default port to listen
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield sequelize_1.initSequelize();
+        yield sequelize_1.initSequelize(true);
         // define a route handler for the default home page
         app.get("/", (req, res) => {
             res.send("Hello world!!!");
@@ -39,4 +39,5 @@ const { EXPRESS_LISTEN_PORT: port } = process.env; // default port to listen
         });
     }
 }))();
+// TODO: Handle uncaught exceptions, etc.
 //# sourceMappingURL=index.js.map

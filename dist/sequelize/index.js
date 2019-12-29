@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_typescript_1 = require("sequelize-typescript");
+const logger_1 = __importDefault(require("../logger"));
 const models = {};
 /**
  * @param {boolean} shouldSync? [default = false] Whether or not the models
@@ -28,13 +32,17 @@ function initSequelize(shouldSync = false) {
         ];
         const { MYSQL_DB, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_PORT, MYSQL_USERNAME } = process.env;
         const sequelize = new sequelize_typescript_1.Sequelize({
+            define: {
+                charset: "utf8",
+                collate: "utf8_general_ci"
+            },
             database: MYSQL_DB,
             dialect: "mysql",
             host: MYSQL_HOST,
-            logging: (...msg) => null,
             password: MYSQL_PASSWORD,
             port: parseInt(MYSQL_PORT, 10),
-            username: MYSQL_USERNAME
+            username: MYSQL_USERNAME,
+            logging: (...msg) => logger_1.default.info(msg[0])
         });
         for (const modelName of modelNames) {
             // @see https://sequelize.org/master/manual/models-definition.html#import

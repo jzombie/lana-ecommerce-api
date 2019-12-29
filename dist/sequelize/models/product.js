@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         sku: {
             allowNull: false,
             unique: true,
-            type: DataTypes.STRING(5)
+            type: DataTypes.STRING(6)
         },
         name: {
             allowNull: false,
@@ -27,9 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         tableName: "product",
-        // don't use camelcase for automatically added attributes but underscore style
-        // so updatedAt will be updated_at
-        underscored: true,
+        timestamps: false
     });
 };
 //# sourceMappingURL=product.js.map

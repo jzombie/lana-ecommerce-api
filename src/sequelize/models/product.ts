@@ -11,7 +11,7 @@ module.exports = (sequelize: Sequelize, DataTypes: {[key: string]: any}) => {
     sku: {
       allowNull: false,
       unique: true,
-      type: DataTypes.STRING(5)
+      type: DataTypes.STRING(6)
     },
     name: {
       allowNull: false,
@@ -28,8 +28,6 @@ module.exports = (sequelize: Sequelize, DataTypes: {[key: string]: any}) => {
   }, {
     tableName: "product",
 
-    // don't use camelcase for automatically added attributes but underscore style
-    // so updatedAt will be updated_at
-    underscored: true,
+    timestamps: false
   });
 };

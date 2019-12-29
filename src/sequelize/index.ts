@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
+import logger from "../logger";
 
 interface IModels {
   [key: string]: any;
@@ -31,13 +32,17 @@ async function initSequelize(shouldSync = false) {
   } = process.env;
 
   const sequelize = new Sequelize({
+    define: {
+      charset: "utf8",
+      collate: "utf8_general_ci"
+    },
     database: MYSQL_DB,
     dialect: "mysql",
     host: MYSQL_HOST,
-    logging: (...msg) => null, // console.log(msg), // Displays all log function call parameters
     password: MYSQL_PASSWORD,
     port: parseInt(MYSQL_PORT, 10),
-    username: MYSQL_USERNAME
+    username: MYSQL_USERNAME,
+    logging: (...msg) => logger.info(msg[0])
   });
 
   for (const modelName of modelNames) {

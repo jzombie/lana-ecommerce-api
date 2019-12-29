@@ -15,8 +15,6 @@ module.exports = (sequelize: Sequelize, DataTypes: {[key: string]: any}) => {
   }, {
     tableName: "cart",
 
-    // don't use camelcase for automatically added attributes but underscore style
-    // so updatedAt will be updated_at
-    underscored: true,
+    timestamps: false
   });
 };

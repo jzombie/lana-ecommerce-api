@@ -20,9 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         tableName: "cart_product",
-        // don't use camelcase for automatically added attributes but underscore style
-        // so updatedAt will be updated_at
-        underscored: true,
+        timestamps: false
     });
 };
 //# sourceMappingURL=cart_product.js.map

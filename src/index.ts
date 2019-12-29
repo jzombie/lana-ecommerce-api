@@ -6,7 +6,7 @@ const { EXPRESS_LISTEN_PORT: port } = process.env; // default port to listen
 
 (async () => {
     try {
-        await initSequelize();
+        await initSequelize(true);
 
         // define a route handler for the default home page
         app.get("/", (req: any, res: any) => {
@@ -27,3 +27,5 @@ const { EXPRESS_LISTEN_PORT: port } = process.env; // default port to listen
         });
     }
 })();
+
+// TODO: Handle uncaught exceptions, etc.

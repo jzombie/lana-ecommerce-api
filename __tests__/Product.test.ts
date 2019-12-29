@@ -2,7 +2,7 @@ require("mysql2/node_modules/iconv-lite").encodingExists("foo"); // https://stac
 import Product, { UnknownProductError } from "../src/classes/Product";
 import { initSequelize } from "../src/sequelize";
 
-describe("Fetch base products", async () => {
+describe("Fetch base products", () => {
   it ("Errors on unknown product", async () => {
     await initSequelize(true);
   

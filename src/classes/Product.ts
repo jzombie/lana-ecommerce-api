@@ -10,6 +10,19 @@ interface IProductDetail {
 }
 
 class Product {
+  public static async fetchAllProducts(): Promise<Product[]> {
+    const sequelizeProductModel = getModels().product;
+
+    const results: Array<{sku: string}> = await sequelizeProductModel.findAll({
+      raw: true,
+      attributes: ["sku"]
+    });
+
+    const products = results.map((result) => new Product(result.sku));
+
+    return products;
+  }
+
   protected sku: string;
   protected sequelizeProductModel: any;
 

@@ -53,9 +53,9 @@ async function initSequelize(shouldSync = false) {
             await connection.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`);
           }
         } catch (exc) {
-          logger.error(exc.message);
+          logger.info('Awaiting access to MySQL');
 
-          sleep(1000);
+          await sleep(1000);
         }
       } while (!connection);
     })();

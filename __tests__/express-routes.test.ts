@@ -1,6 +1,8 @@
 import request from "supertest";
 import initExpressApp from "../src/initExpressApp";
 
+jest.setTimeout(20000);
+
 describe("Test Express app routes", () => {
   it ("Retrieves a list of products", async (done) => {
     const app = await initExpressApp();

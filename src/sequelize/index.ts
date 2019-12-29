@@ -1,6 +1,7 @@
 import mysql from "mysql2/promise";
 import { Sequelize } from "sequelize-typescript";
 import logger from "../logger";
+import sleep from "../sleep";
 import baseProducts from "../test.baseProducts";
 
 interface IModels {
@@ -35,16 +36,29 @@ async function initSequelize(shouldSync = false) {
       MYSQL_USERNAME
     } = process.env;
 
-    if (NODE_ENV === "development") {
-      const connection = await mysql.createConnection({
-        user: MYSQL_USERNAME,
-        password: MYSQL_PASSWORD,
-        host: MYSQL_HOST,
-        port: parseInt(MYSQL_PORT, 10)
-      });
+    // Await database to exist before trying to continue
+    await (async () => {
+      let connection = null;
 
-      await connection.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`);
-    }
+      do {
+        try {
+          connection = await mysql.createConnection({
+            user: MYSQL_USERNAME,
+            password: MYSQL_PASSWORD,
+            host: MYSQL_HOST,
+            port: parseInt(MYSQL_PORT, 10)
+          });
+
+          if (NODE_ENV === "development") {
+            await connection.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`);
+          }
+        } catch (exc) {
+          logger.error(exc.message);
+
+          sleep(1000);
+        }
+      } while (!connection);
+    })();
 
     const sequelize = new Sequelize({
       define: {

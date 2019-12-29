@@ -44,5 +44,6 @@ class Product {
 
 export default Product;
 export {
-  UnknownProductError
+  UnknownProductError,
+  IProductDetail
 };

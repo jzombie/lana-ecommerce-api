@@ -1,0 +1,1 @@
+{"version":3,"file":"baseProducts.js","sourceRoot":"","sources":["../../../__tests__/data/baseProducts.ts"],"names":[],"mappings":";;AAAA,MAAM,YAAY,GAAQ;IACxB;QACE,GAAG,EAAE,QAAQ;QACb,IAAI,EAAE,aAAa;QACnB,KAAK,EAAE,KAAK;QACZ,aAAa,EAAE,EAAE;KAClB;CACF,CAAC;AAEF,kBAAe,YAAY,CAAC"}

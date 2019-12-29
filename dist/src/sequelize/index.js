@@ -14,8 +14,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const promise_1 = __importDefault(require("mysql2/promise"));
 const sequelize_typescript_1 = require("sequelize-typescript");
+const baseProducts_1 = __importDefault(require("../../__tests__/data/baseProducts"));
 const logger_1 = __importDefault(require("../logger"));
-const test_baseProducts_1 = __importDefault(require("../test.baseProducts"));
 const models = {};
 /**
  * @param {boolean} shouldSync? [default = false] Whether or not the models
@@ -33,16 +33,14 @@ function initSequelize(shouldSync = false) {
                 "cart",
                 "cart_product"
             ];
-            const { NODE_ENV, MYSQL_DB, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_PORT, MYSQL_USERNAME } = process.env;
-            if (NODE_ENV === "development") {
-                const connection = yield promise_1.default.createConnection({
-                    user: MYSQL_USERNAME,
-                    password: MYSQL_PASSWORD,
-                    host: MYSQL_HOST,
-                    port: parseInt(MYSQL_PORT, 10)
-                });
-                yield connection.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`);
-            }
+            const { MYSQL_DB, MYSQL_HOST, MYSQL_PASSWORD, MYSQL_PORT, MYSQL_USERNAME } = process.env;
+            const connection = yield promise_1.default.createConnection({
+                user: MYSQL_USERNAME,
+                password: MYSQL_PASSWORD,
+                host: MYSQL_HOST,
+                port: parseInt(MYSQL_PORT, 10)
+            });
+            yield connection.query(`CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}`);
             const sequelize = new sequelize_typescript_1.Sequelize({
                 define: {
                     charset: "utf8",
@@ -64,11 +62,8 @@ function initSequelize(shouldSync = false) {
                 }
                 models[modelName] = model;
             }
-            if (NODE_ENV === "development") {
-                // Sync initial base products
-                for (const baseProduct of test_baseProducts_1.default) {
-                    yield models.product.create(baseProduct).catch(() => logger_1.default.info(`Base product already exists with SKU: ${baseProduct.sku}`));
-                }
+            for (const baseProduct of baseProducts_1.default) {
+                models.product.create(baseProduct);
             }
             return models;
         }

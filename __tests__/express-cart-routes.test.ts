@@ -18,7 +18,7 @@ describe("Test Express app cart routes", () => {
         }
 
         const result = JSON.parse(res.text);
-        expect(result.subTotal).toEqual(5399.99);
+        expect(result.subtotal).toEqual(5399.99);
 
         done();
       });
@@ -38,7 +38,7 @@ describe("Test Express app cart routes", () => {
         }
 
         const result = JSON.parse(res.text);
-        expect(result.subTotal).toEqual(0);
+        expect(result.subtotal).toEqual(0);
 
         done();
       });
@@ -58,7 +58,7 @@ describe("Test Express app cart routes", () => {
         }
 
         const result = JSON.parse(res.text);
-        expect(result.subTotal).toEqual(99.98);
+        expect(result.subtotal).toEqual(99.98);
 
         done();
       });
@@ -78,7 +78,7 @@ describe("Test Express app cart routes", () => {
         }
 
         const result = JSON.parse(res.text);
-        expect(result.subTotal).toEqual(0);
+        expect(result.subtotal).toEqual(0);
 
         done();
       });
@@ -98,7 +98,7 @@ describe("Test Express app cart routes", () => {
         }
 
         const result = JSON.parse(res.text);
-        expect(result.subTotal).toEqual(295.65);
+        expect(result.subtotal).toEqual(295.65);
 
         done();
       });

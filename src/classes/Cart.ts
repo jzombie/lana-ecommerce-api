@@ -12,7 +12,9 @@ class Cart {
   protected sequelizeCartModel: any;
   protected sequelizeCartProductModel: any;
 
-  // If no uuid is passed, create one...
+  /**
+   * @param {string} uuid? If no uuid is passed, one is created.
+   */
   constructor(uuid: string = null) {
     this.uuid = !uuid ? uuidv4() : uuid;
 
@@ -21,29 +23,38 @@ class Cart {
     this.sequelizeCartProductModel = cart_product;
   }
 
-  public async addItem(sku: string, newQty: number = 1): Promise<void> {
+  /**
+   * Adds an item to the cart.
+   *
+   * @param {string} sku
+   * @param {number} qty?
+   * @return {Promise<void>}
+   */
+  public async addItem(sku: string, qty: number = 1): Promise<void> {
     const product = new Product(sku);
     const productDbId = await product.fetchDbId();
     const cartDbId = await this.fetchDbId();
 
     const cartBaseItems: ICartItem[] = await this.fetchBaseItems();
-    // Where cartQty is how many are currently in the cart before adding
-    const { cartQty = 0 } = cartBaseItems.find((cartItem: ICartItem) => cartItem.sku === sku) || {};
+
+    const { cartQty: existingCartQty = 0 } = cartBaseItems.find((cartItem: ICartItem) => cartItem.sku === sku) || {};
 
     // Prevent cart quantity from being greater than inventory quantity
     const { inventoryQty } = await product.fetchDetail();
 
-    if (newQty + cartQty > inventoryQty) {
-      const adjustedNewQty: number = inventoryQty - cartQty;
-      if (adjustedNewQty > 0) {
-        newQty = adjustedNewQty;
+    // If the new qty + the existing qty is greater than inventory qty...
+    if (qty + existingCartQty > inventoryQty) {
+      // Reduce the qty to how many are left in the inventory
+      const reducedQty: number = inventoryQty - existingCartQty;
+      if (reducedQty > 0) {
+        qty = reducedQty;
       } else {
         throw new Error(`Cannot add additional items: ${sku}`);
       }
     }
 
     // For each new item, add it to the cart as a new row
-    for (let i = 0; i < newQty; i++) {
+    for (let i = 0; i < qty; i++) {
       await this.sequelizeCartProductModel.create({
         product_id: productDbId,
         cart_id: cartDbId
@@ -51,6 +62,13 @@ class Cart {
     }
   }
 
+  /**
+   * Removes an item from the cart.
+   *
+   * @param {string} sku
+   * @param {number} qty?
+   * @return {Promise<void>}
+   */
   public async removeItem(sku: string, qty: number = 1): Promise<void> {
     const product = new Product(sku);
     const productDbId = await product.fetchDbId();
@@ -74,6 +92,8 @@ class Cart {
 
   /**
    * Retrieves items, not including automatically added promotions.
+   *
+   * @return {Promise<ICartItem[]>}
    */
   public async fetchBaseItems(): Promise<ICartItem[]> {
     const cartDbId = await this.fetchDbId();
@@ -123,7 +143,9 @@ class Cart {
   }
 
   /**
-   * Retrieves automatically added promotions.
+   * Retrieves automatically-added promotional items, along with the original items.
+   *
+   * @return {Promise<{ baseItems: ICartItem[], promoItems: ICartItem[] }>}
    */
   public async fetchBaseAndPromoItems(): Promise<{ baseItems: ICartItem[], promoItems: ICartItem[] }> {
     const originalBaseItems = await this.fetchBaseItems();
@@ -191,20 +213,30 @@ class Cart {
     };
   }
 
+  /**
+   * Fetches the cart's subtotal price.
+   *
+   * @return {Promise<number>}
+   */
   public async fetchSubtotal(): Promise<number> {
     const { baseItems, promoItems } = await this.fetchBaseAndPromoItems();
 
-    let subTotal = 0;
+    let subtotal = 0;
     baseItems.forEach((item) => {
-      subTotal += roundMoney(item.price * item.cartQty);
+      subtotal += roundMoney(item.price * item.cartQty);
     });
     promoItems.forEach((item) => {
-      subTotal += roundMoney(item.price * item.cartQty);
+      subtotal += roundMoney(item.price * item.cartQty);
     });
 
-    return subTotal;
+    return subtotal;
   }
 
+  /**
+   * Removes all items from the cart.
+   *
+   * @return {Promise<void>}
+   */
   public async empty(): Promise<void> {
     const cartDbId = await this.fetchDbId();
 
@@ -216,7 +248,13 @@ class Cart {
   }
 
   /**
-   * Creates the cart in the database, if it doesn"t already exist.
+   * Creates the cart in the database, if it doesn't already exist, and
+   * retrieves the db row id of the cart in the cart table.
+   *
+   * Note, this does not correspond to the product rows in the cart_product
+   * table.
+   *
+   * @return {Promise<number>}
    */
   public async fetchDbId(): Promise<number> {
     let model = await this.sequelizeCartModel.findOne({

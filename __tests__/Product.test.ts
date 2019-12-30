@@ -1,5 +1,5 @@
 require("mysql2/node_modules/iconv-lite").encodingExists("foo"); // https://stackoverflow.com/questions/46227783/encoding-not-recognized-in-jest-js
-import Product, { UnknownProductError } from "../src/classes/Product";
+import Product, { UnknownSKUError } from "../src/classes/Product";
 import { initSequelize } from "../src/sequelize";
 
 jest.setTimeout(20000);
@@ -10,7 +10,7 @@ describe("Fetch base products", () => {
   
     const product = new Product("120P91__NOT_EXIST");
   
-    return expect(product.fetchDetail()).rejects.toThrow(UnknownProductError);
+    return expect(product.fetchDetail()).rejects.toThrow(UnknownSKUError);
   });
 
   it ("Fetches Google Home with preset inventory qty", async () => {

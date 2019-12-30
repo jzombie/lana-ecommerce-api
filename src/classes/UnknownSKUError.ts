@@ -1,10 +1,10 @@
-class UnknownProductError extends Error {
+class UnknownSKUError extends Error {
   constructor(sku: string) {
     const message: string = `Product with SKU "${sku}" is not a known product`;
 
     super(message);
-    this.name = "UnknownProductError";
+    this.name = "UnknownSKUError";
   }
 }
 
-export default UnknownProductError;
+export default UnknownSKUError;

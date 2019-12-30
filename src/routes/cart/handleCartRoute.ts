@@ -5,7 +5,7 @@ import handleRoute from "../handleRoute";
 interface ICartRouteResponse {
   baseItems: ICartItem[];
   promoItems: ICartItem[];
-  subTotal: number;
+  subtotal: number;
 }
 
 /**
@@ -28,11 +28,11 @@ const handleCartRoute = async (
     const cart = new Cart(req.session.id);
 
     const baseAndPromoItems = await cart.fetchBaseAndPromoItems();
-    const subTotal = await cart.fetchSubtotal();
+    const subtotal = await cart.fetchSubtotal();
 
     return {
       ...baseAndPromoItems,
-      subTotal
+      subtotal
     };
   });
 };

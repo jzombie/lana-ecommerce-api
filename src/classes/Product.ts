@@ -1,6 +1,6 @@
 import logger from "../logger";
 import { getModels } from "../sequelize";
-import UnknownProductError from "./UnknownProductError";
+import UnknownSKUError from "./UnknownSKUError";
 
 interface IProductDetail {
   sku: string;
@@ -72,7 +72,7 @@ class Product {
         level: "error",
         message: exc.message || exc.toString()
       });
-      throw new UnknownProductError(this.sku);
+      throw new UnknownSKUError(this.sku);
     }
   }
 
@@ -96,6 +96,6 @@ class Product {
 
 export default Product;
 export {
-  UnknownProductError,
+  UnknownSKUError,
   IProductDetail
 };

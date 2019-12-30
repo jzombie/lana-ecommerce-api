@@ -10,7 +10,8 @@ In order to run this you will need the following installed on your system:
 
 ## Testing
 
-If in a Unix environment:
+If in a Unix environment (please note that this command spins up a Docker Compose environment and MySQL will need to initialize, so
+you may see a lot of "junk" in the terminal until the unit tests run).
 ```
 $ ./test.sh
 ```

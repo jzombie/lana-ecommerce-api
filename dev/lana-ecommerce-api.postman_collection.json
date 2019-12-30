@@ -179,19 +179,19 @@
 			"response": []
 		},
 		{
-			"name": "/cart/A304SD/4 (Add 4 Alexa Speakers)",
+			"name": "/cart/A304SD/3 (Add 3 Alexa Speakers)",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "{{base_url}}/cart/A304SD/4",
+					"raw": "{{base_url}}/cart/A304SD/3",
 					"host": [
 						"{{base_url}}"
 					],
 					"path": [
 						"cart",
 						"A304SD",
-						"4"
+						"3"
 					]
 				}
 			},

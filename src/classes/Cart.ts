@@ -1,5 +1,5 @@
 import uuidv4 from "uuid/v4";
-import logger from "../logger";
+import roundMoney from "../roundMoney";
 import { getModels } from "../sequelize";
 import Product, { IProductDetail } from "./Product";
 
@@ -73,14 +73,6 @@ class Cart {
   }
 
   /**
-   * Fetches all items, including automatically added promotions.
-   */
-  /*
-  public async fetchItems(): Promise<Product[]> {
-  }
-  */
-
-  /**
    * Retrieves items, not including automatically added promotions.
    */
   public async fetchBaseItems(): Promise<ICartItem[]> {
@@ -133,10 +125,85 @@ class Cart {
   /**
    * Retrieves automatically added promotions.
    */
-  /*
-  public async fetchPromoItems(): Promise<Product[]> {
+  public async fetchBaseAndPromoItems(): Promise<{ baseItems: ICartItem[], promoItems: ICartItem[] }> {
+    const originalBaseItems = await this.fetchBaseItems();
+
+    const promoItems: ICartItem[] = [];
+
+    const baseItems = [...originalBaseItems];
+    for (const cartItem of baseItems) {
+      // Each sale of a MacBook Pro comes with a free Raspberry Pi B
+      if (cartItem.sku === "43N23P") {
+        const promoSku = "234234";
+
+        for (let i = 0; i < cartItem.cartQty; i++) {
+          let cartPromoItem =
+            baseItems.find((item) => item.sku === promoSku) ||
+            promoItems.find((item) => item.sku === promoSku);
+
+          if (cartPromoItem) {
+            cartPromoItem.price = 0 - cartPromoItem.price;
+            if (cartPromoItem.inventoryQty > 0) {
+              cartPromoItem.cartQty++;
+              cartPromoItem.inventoryQty--;
+            }
+          } else {
+            const product = new Product(promoSku);
+            const productDetail = await product.fetchDetail();
+
+            if (productDetail.inventoryQty > 0) {
+              cartPromoItem = {
+                ...productDetail,
+                price: 0,
+                cartQty: 1,
+                inventoryQty: productDetail.inventoryQty - 1
+              };
+
+              promoItems.push(cartPromoItem);
+            }
+          }
+        }
+      }
+
+      // Buy 3 Google Homes for the price of 2
+      if (cartItem.sku === "120P90") {
+        if (cartItem.cartQty >= 3) {
+          cartItem.cartQty--;
+          promoItems.push({
+            ...cartItem,
+            cartQty: 1,
+            price: 0
+          });
+        }
+      }
+
+      // Buying more than 3 Alexa Speakers will have a 10% discount on all Alexa speakers
+      if (cartItem.sku === "A304SD") {
+        if (cartItem.cartQty >= 3) {
+          cartItem.price = roundMoney(cartItem.price * .9);
+        }
+      }
+    }
+
+    return {
+      baseItems,
+      promoItems
+    };
   }
-  */
+
+  public async fetchSubtotal(): Promise<number> {
+    const { baseItems, promoItems } = await this.fetchBaseAndPromoItems();
+
+    let subTotal = 0;
+    baseItems.forEach((item) => {
+      subTotal += roundMoney(item.price * item.cartQty);
+    });
+    promoItems.forEach((item) => {
+      subTotal += roundMoney(item.price * item.cartQty);
+    });
+
+    return subTotal;
+  }
 
   public async empty(): Promise<void> {
     const cartDbId = await this.fetchDbId();

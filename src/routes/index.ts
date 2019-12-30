@@ -27,7 +27,7 @@ router.get("/cart", async (req: express.Request, res: express.Response) => {
   handleRoute(req, res, async () => {
     const cart = new Cart(req.session.id);
 
-    return cart.fetchBaseItems();
+    const baseAndPromoItems = await cart.fetchBaseAndPromoItems();
   });
 });
 
@@ -39,7 +39,13 @@ router.post("/cart/:sku", async (req: express.Request, res: express.Response) =>
 
     await cart.addItem(sku, 1);
 
-    return cart.fetchBaseItems();
+    const baseAndPromoItems = await cart.fetchBaseAndPromoItems();
+    const subtotal = await cart.fetchSubtotal();
+
+    return {
+      ...baseAndPromoItems,
+      subtotal
+    };
   });
 });
 
@@ -51,7 +57,13 @@ router.post("/cart/:sku/:qty", async (req: express.Request, res: express.Respons
 
     await cart.addItem(sku, parseInt(qty, 10));
 
-    return cart.fetchBaseItems();
+    const baseAndPromoItems = await cart.fetchBaseAndPromoItems();
+    const subtotal = await cart.fetchSubtotal();
+
+    return {
+      ...baseAndPromoItems,
+      subtotal
+    };
   });
 });
 
@@ -63,7 +75,13 @@ router.delete("/cart/:sku", async (req: express.Request, res: express.Response) 
 
     await cart.removeItem(sku, 1);
 
-    return cart.fetchBaseItems();
+    const baseAndPromoItems = await cart.fetchBaseAndPromoItems();
+    const subtotal = await cart.fetchSubtotal();
+
+    return {
+      ...baseAndPromoItems,
+      subtotal
+    };
   });
 });
 
@@ -75,7 +93,13 @@ router.delete("/cart/:sku/:qty", async (req: express.Request, res: express.Respo
 
     await cart.removeItem(sku, parseInt(qty, 10));
 
-    return cart.fetchBaseItems();
+    const baseAndPromoItems = await cart.fetchBaseAndPromoItems();
+    const subtotal = await cart.fetchSubtotal();
+
+    return {
+      ...baseAndPromoItems,
+      subtotal
+    };
   });
 });
 
@@ -85,7 +109,13 @@ router.delete("/cart", async (req: express.Request, res: express.Response) => {
 
     await cart.empty();
 
-    return cart.fetchBaseItems();
+    const baseAndPromoItems = await cart.fetchBaseAndPromoItems();
+    const subtotal = await cart.fetchSubtotal();
+
+    return {
+      ...baseAndPromoItems,
+      subtotal
+    };
   });
 });
 

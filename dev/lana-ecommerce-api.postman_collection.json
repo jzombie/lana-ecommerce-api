@@ -106,7 +106,7 @@
 			"response": []
 		},
 		{
-			"name": "/cart (Delete the cart)",
+			"name": "/cart (Empties the cart)",
 			"request": {
 				"method": "DELETE",
 				"header": [],

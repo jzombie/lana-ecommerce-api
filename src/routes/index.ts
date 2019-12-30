@@ -23,6 +23,26 @@ router.get("/products", async (req: express.Request, res: express.Response) => {
   });
 });
 
+router.get("/cart", async (req: express.Request, res: express.Response) => {
+  handleRoute(req, res, async () => {
+    const cart = new Cart(req.session.id);
+
+    return cart.fetchBaseItems();
+  });
+});
+
+router.post("/cart/:sku", async (req: express.Request, res: express.Response) => {
+  handleRoute(req, res, async () => {
+    const cart = new Cart(req.session.id);
+
+    const { sku, qty } = req.params;
+
+    await cart.addItem(sku, 1);
+
+    return cart.fetchBaseItems();
+  });
+});
+
 router.post("/cart/:sku/:qty", async (req: express.Request, res: express.Response) => {
   handleRoute(req, res, async () => {
     const cart = new Cart(req.session.id);
@@ -30,6 +50,8 @@ router.post("/cart/:sku/:qty", async (req: express.Request, res: express.Respons
     const { sku, qty } = req.params;
 
     await cart.addItem(sku, parseInt(qty, 10));
+
+    return cart.fetchBaseItems();
   });
 });
 
@@ -40,6 +62,8 @@ router.delete("/cart/:sku", async (req: express.Request, res: express.Response) 
     const { sku } = req.params;
 
     await cart.removeItem(sku, 1);
+
+    return cart.fetchBaseItems();
   });
 });
 
@@ -50,6 +74,8 @@ router.delete("/cart/:sku/:qty", async (req: express.Request, res: express.Respo
     const { sku, qty } = req.params;
 
     await cart.removeItem(sku, parseInt(qty, 10));
+
+    return cart.fetchBaseItems();
   });
 });
 
@@ -76,6 +102,11 @@ const handleRoute = async (
       throw new Error(`Unhandled response type: ${typeof result}`);
     }
   } catch (exc) {
+    const errStack = exc.stack || null;
+    if (errStack) {
+      logger.error(JSON.stringify(errStack));
+    }
+
     const errMsg: string = exc.message || exc.toString();
     const errName: string = exc.name || null;
 

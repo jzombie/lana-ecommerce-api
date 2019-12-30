@@ -10,6 +10,26 @@ interface IProductDetail {
 }
 
 class Product {
+  public static async fetchProductWithDbId(dbId: number): Promise<Product> {
+    const sequelizeProductModel = getModels().product;
+
+    const result: {sku: string} = await sequelizeProductModel.findOne({
+      raw: true,
+      attributes: ["sku"],
+      where: {
+        id: dbId
+      }
+    });
+
+    if (!result) {
+      throw new Error(`Unable to locate product with DB id: ${dbId}`);
+    }
+
+    const product = new Product(result.sku);
+
+    return product;
+  }
+
   public static async fetchAllProducts(): Promise<Product[]> {
     const sequelizeProductModel = getModels().product;
 

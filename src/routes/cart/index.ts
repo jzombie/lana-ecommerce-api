@@ -1,6 +1,7 @@
 import express from "express";
 import Cart from "../../classes/Cart";
-import handleRoute from "../handleRoute";
+import handleCartRoute from "./handleCartRoute";
+
 const router = express.Router();
 
 /**
@@ -47,7 +48,7 @@ router.delete("/:sku", async (req: express.Request, res: express.Response) => {
  * Deletes an item with the given quantity from the cart.
  */
 router.delete("/:sku/:qty", async (req: express.Request, res: express.Response) => {
-  handleRoute(req, res, async (): Promise<void> => {
+  handleCartRoute(req, res, async (): Promise<void> => {
     const cart = new Cart(req.session.id);
     const { sku, qty } = req.params;
     await cart.removeItem(sku, parseInt(qty, 10));
@@ -58,39 +59,10 @@ router.delete("/:sku/:qty", async (req: express.Request, res: express.Response) 
  * Empties the cart.
  */
 router.delete("/", async (req: express.Request, res: express.Response) => {
-  handleRoute(req, res, async (): Promise<void> => {
+  handleCartRoute(req, res, async (): Promise<void> => {
     const cart = new Cart(req.session.id);
     await cart.empty();
   });
 });
-
-/**
- * Unified handling for cart API routes.
- *
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {function: Promise<any | Error>} routeHandler? The resolved return of which is
- * sent through the res (express.Response) object back to the client.
- */
-const handleCartRoute = async (
-  req: express.Request,
-  res: express.Response,
-  routeHandler?: () => Promise<any | Error>): Promise<void> => {
-  await handleRoute(req, res, async () => {
-    if (typeof routeHandler === "function") {
-      await routeHandler();
-    }
-
-    const cart = new Cart(req.session.id);
-
-    const baseAndPromoItems = await cart.fetchBaseAndPromoItems();
-    const subtotal = await cart.fetchSubtotal();
-
-    return {
-      ...baseAndPromoItems,
-      subtotal
-    };
-  });
-};
 
 export default router;

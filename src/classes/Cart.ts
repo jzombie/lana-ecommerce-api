@@ -244,3 +244,6 @@ class Cart {
 }
 
 export default Cart;
+export {
+  ICartItem
+};

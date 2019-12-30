@@ -3,7 +3,7 @@ import initExpressApp from "../src/initExpressApp";
 
 jest.setTimeout(20000);
 
-describe("Test Express app routes", () => {
+describe("Test Express app product routes", () => {
   it ("Retrieves a list of products", async (done) => {
     const app = await initExpressApp();
 

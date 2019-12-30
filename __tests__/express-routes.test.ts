@@ -19,7 +19,7 @@ describe("Test Express app routes", () => {
 
         const products = JSON.parse(res.text);
         for (const product of products) {
-          expect(Object.keys(product)).toEqual(["sku", "name", "price", "inventory_qty"]);
+          expect(Object.keys(product)).toEqual(["sku", "name", "price", "inventoryQty"]);
         }
 
         done();
@@ -43,7 +43,7 @@ describe("Test Express app routes", () => {
           sku: "120P90",
           name: "Google Home",
           price: 49.99,
-          inventory_qty: 10
+          inventoryQty: 10
         });
 
         done();

@@ -10,7 +10,8 @@ module.exports = (sequelize: Sequelize, DataTypes: {[key: string]: any}) => {
     },
     uuid: {
       allowNull: false,
-      type: DataTypes.STRING(36)
+      type: DataTypes.STRING(36),
+      unique: true
     }
   }, {
     tableName: "cart",

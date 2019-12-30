@@ -10,18 +10,24 @@ module.exports = (sequelize: Sequelize, DataTypes: {[key: string]: any}) => {
     },
     cart_id: {
       allowNull: false,
-      type: DataTypes.INTEGER(10).UNSIGNED
-      // TODO: Apply references
+      type: DataTypes.INTEGER(10).UNSIGNED,
+      references: {
+        model: "cart",
+        key: "id"
+      }
     },
     product_id: {
       allowNull: false,
-      type: DataTypes.INTEGER(10).UNSIGNED
-      // TODO: Apply references
+      type: DataTypes.INTEGER(10).UNSIGNED,
+      references: {
+        model: "product",
+        key: "id"
+      }
     }
   }, {
     tableName: "cart_product",
 
-    // don't use camelcase for automatically added attributes but underscore style
+    // don"t use camelcase for automatically added attributes but underscore style
     // so updatedAt will be updated_at
     underscored: true
   });

@@ -6,7 +6,7 @@ interface IProductDetail {
   sku: string;
   name: string;
   price: number;
-  inventory_qty: number;
+  inventoryQty: number;
 }
 
 class Product {
@@ -33,17 +33,19 @@ class Product {
 
   public async fetchDetail(): Promise<IProductDetail> {
     try {
-      const { sku, name, price, inventory_qty }: IProductDetail = await this.sequelizeProductModel.findOne({
+      const dbResp = await this.sequelizeProductModel.findOne({
         raw: true,
         attributes: ["sku", "name", "price", "inventory_qty"],
         where: { sku: this.sku }
       });
 
+      const { sku, name, price } = dbResp;
+
       return {
         sku,
         name,
         price,
-        inventory_qty
+        inventoryQty: dbResp.inventory_qty
       };
     } catch (exc) {
       logger.log({
@@ -52,6 +54,23 @@ class Product {
       });
       throw new UnknownProductError(this.sku);
     }
+  }
+
+  public async fetchDbId(): Promise<number> {
+    const { id } = await this.sequelizeProductModel.findOne({
+      raw: true,
+      attributes: ["id"],
+      where: {
+        sku: this.sku
+      }
+    });
+
+    if (id === undefined || id === null) {
+      // TODO: Convert to custom error
+      throw new Error("Unable to acquire product db id");
+    }
+
+    return id;
   }
 }
 

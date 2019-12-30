@@ -1,4 +1,5 @@
 import express from "express";
+import Cart from "../classes/Cart";
 import Product, { IProductDetail } from "../classes/Product";
 import logger from "../logger";
 const router = express.Router();
@@ -22,6 +23,36 @@ router.get("/products", async (req: express.Request, res: express.Response) => {
   });
 });
 
+router.post("/cart/:sku/:qty", async (req: express.Request, res: express.Response) => {
+  handleRoute(req, res, async () => {
+    const cart = new Cart(req.session.id);
+
+    const { sku, qty } = req.params;
+
+    await cart.addItem(sku, parseInt(qty, 10));
+  });
+});
+
+router.delete("/cart/:sku", async (req: express.Request, res: express.Response) => {
+  handleRoute(req, res, async () => {
+    const cart = new Cart(req.session.id);
+
+    const { sku } = req.params;
+
+    await cart.removeItem(sku, 1);
+  });
+});
+
+router.delete("/cart/:sku/:qty", async (req: express.Request, res: express.Response) => {
+  handleRoute(req, res, async () => {
+    const cart = new Cart(req.session.id);
+
+    const { sku, qty } = req.params;
+
+    await cart.removeItem(sku, parseInt(qty, 10));
+  });
+});
+
 /**
  * Unified handling for API routes.
  *
@@ -37,7 +68,7 @@ const handleRoute = async (
   try {
     logger.info(`HTTP Request | ${req.method} | ${req.url}`);
 
-    const result: any = await routeHandler();
+    const result: any = await routeHandler() || {};
 
     if (typeof result === "object") {
       res.json(result);

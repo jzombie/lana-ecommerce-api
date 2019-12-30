@@ -14,7 +14,7 @@ router.get("/", async (req: express.Request, res: express.Response) => {
  * Adds a single item to the cart.
  */
 router.post("/:sku", async (req: express.Request, res: express.Response) => {
-  handleCartRoute(req, res, async () => {
+  handleCartRoute(req, res, async (): Promise<void> => {
     const cart = new Cart(req.session.id);
     const { sku, qty } = req.params;
     await cart.addItem(sku, 1);
@@ -25,7 +25,7 @@ router.post("/:sku", async (req: express.Request, res: express.Response) => {
  * Adds an item with the given quantity to the cart.
  */
 router.post("/:sku/:qty", async (req: express.Request, res: express.Response) => {
-  handleCartRoute(req, res, async () => {
+  handleCartRoute(req, res, async (): Promise<void> => {
     const cart = new Cart(req.session.id);
     const { sku, qty } = req.params;
     await cart.addItem(sku, parseInt(qty, 10));
@@ -36,7 +36,7 @@ router.post("/:sku/:qty", async (req: express.Request, res: express.Response) =>
  * Deletes a single item from the cart.
  */
 router.delete("/:sku", async (req: express.Request, res: express.Response) => {
-  handleCartRoute(req, res, async () => {
+  handleCartRoute(req, res, async (): Promise<void> => {
     const cart = new Cart(req.session.id);
     const { sku } = req.params;
     await cart.removeItem(sku, 1);
@@ -47,7 +47,7 @@ router.delete("/:sku", async (req: express.Request, res: express.Response) => {
  * Deletes an item with the given quantity from the cart.
  */
 router.delete("/:sku/:qty", async (req: express.Request, res: express.Response) => {
-  handleRoute(req, res, async () => {
+  handleRoute(req, res, async (): Promise<void> => {
     const cart = new Cart(req.session.id);
     const { sku, qty } = req.params;
     await cart.removeItem(sku, parseInt(qty, 10));
@@ -58,7 +58,7 @@ router.delete("/:sku/:qty", async (req: express.Request, res: express.Response) 
  * Empties the cart.
  */
 router.delete("/", async (req: express.Request, res: express.Response) => {
-  handleRoute(req, res, async () => {
+  handleRoute(req, res, async (): Promise<void> => {
     const cart = new Cart(req.session.id);
     await cart.empty();
   });

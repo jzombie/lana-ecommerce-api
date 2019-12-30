@@ -125,10 +125,15 @@ class Cart {
   }
   */
 
-  /*
   public async empty(): Promise<void> {
+    const cartDbId = await this.fetchDbId();
+
+    await this.sequelizeCartProductModel.destroy({
+      where: {
+        cart_id: cartDbId
+      }
+    });
   }
-  */
 
   /**
    * Creates the cart in the database, if it doesn"t already exist.

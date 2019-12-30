@@ -79,6 +79,16 @@ router.delete("/cart/:sku/:qty", async (req: express.Request, res: express.Respo
   });
 });
 
+router.delete("/cart", async (req: express.Request, res: express.Response) => {
+  handleRoute(req, res, async () => {
+    const cart = new Cart(req.session.id);
+
+    await cart.empty();
+
+    return cart.fetchBaseItems();
+  });
+});
+
 /**
  * Unified handling for API routes.
  *

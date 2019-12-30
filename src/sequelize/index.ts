@@ -89,11 +89,10 @@ async function initSequelize(shouldSync = false) {
     // Create initial products, if in development
     if (NODE_ENV === "development") {
       for (const baseProduct of baseProducts) {
-        await models.product.create(
-          baseProduct).catch(
-            () => logger.info(`Base product already exists with SKU: ${baseProduct.sku}`
-          )
-        );
+        await models.product.create(baseProduct)
+          .catch(
+            () => logger.info(`Base product already exists with SKU: ${baseProduct.sku}`)
+          );
       }
     }
 

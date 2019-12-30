@@ -36,5 +36,3 @@ services:
       - lana-service-network
     environment:
       MYSQL_ROOT_PASSWORD: example
-      MYSQL_USER: sequelize_test
-      MYSQL_PASSWORD: sequelize_test

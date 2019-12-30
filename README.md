@@ -41,3 +41,6 @@ The current output files are:
 ## MySQL
 
 Sequelize is utilized as an ORM for MySQL.  MySQL is spun up in the included Docker Compose configurations.
+
+Note, the products in this test environment are originally seeded from <rootDir>/src/test.baseProducts.ts
+via the <rootDir>/src/sequelize/index.ts script.

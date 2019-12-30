@@ -152,42 +152,10 @@ class Cart {
 
     const promoItems: ICartItem[] = [];
 
-    const baseItems = [...originalBaseItems];
+    let baseItems = [...originalBaseItems];
     for (const cartItem of baseItems) {
-      // Each sale of a MacBook Pro comes with a free Raspberry Pi B
-      if (cartItem.sku === "43N23P") {
-        const promoSku = "234234";
-
-        for (let i = 0; i < cartItem.cartQty; i++) {
-          let cartPromoItem =
-            baseItems.find((item) => item.sku === promoSku) ||
-            promoItems.find((item) => item.sku === promoSku);
-
-          if (cartPromoItem) {
-            cartPromoItem.price = 0 - cartPromoItem.price;
-            if (cartPromoItem.inventoryQty > 0) {
-              cartPromoItem.cartQty++;
-              cartPromoItem.inventoryQty--;
-            }
-          } else {
-            const product = new Product(promoSku);
-            const productDetail = await product.fetchDetail();
-
-            if (productDetail.inventoryQty > 0) {
-              cartPromoItem = {
-                ...productDetail,
-                price: 0,
-                cartQty: 1,
-                inventoryQty: productDetail.inventoryQty - 1
-              };
-
-              promoItems.push(cartPromoItem);
-            }
-          }
-        }
-      }
-
       // Buy 3 Google Homes for the price of 2
+      // Expected retail price for toal is: $99.98
       if (cartItem.sku === "120P90") {
         if (cartItem.cartQty >= 3) {
           cartItem.cartQty--;
@@ -200,9 +168,53 @@ class Cart {
       }
 
       // Buying more than 3 Alexa Speakers will have a 10% discount on all Alexa speakers
+      // Expected retail price for 3 is: $295.65
       if (cartItem.sku === "A304SD") {
         if (cartItem.cartQty >= 3) {
           cartItem.price = roundMoney(cartItem.price * .9);
+        }
+      }
+
+      // Each sale of a MacBook Pro comes with a free Raspberry Pi B
+      // Expected price for 1 MacBook Pro & 1 Raspberry Pi B: $5,399.99
+      if (cartItem.sku === "43N23P") {
+        const promoSku = "234234";
+
+        for (let i = 0; i < cartItem.cartQty; i++) {
+          // Convert existing cart item, if the item has already been added as a main item
+          const convPromoItem = baseItems.find((item) => item.sku === promoSku);
+          if (convPromoItem && convPromoItem.cartQty > 0) {
+            convPromoItem.cartQty--;
+
+            if (convPromoItem.cartQty === 0) {
+              // Remove promo item from base items
+              baseItems = baseItems.filter((item) => item.sku !== promoSku);
+            }
+          }
+
+          // Determine if the promo item is already in the list of promo items
+          let promoItem = promoItems.find((item) => item.sku === promoSku);
+          if (promoItem) {
+            if (promoItem.inventoryQty > 0) {
+              promoItem.cartQty++;
+              promoItem.inventoryQty--;
+            }
+          } else {
+            const raspPi = new Product(promoSku);
+            const raspPiDetail = await raspPi.fetchDetail();
+
+            if (raspPiDetail.inventoryQty > 0) {
+              // Add the item to the list of promo items
+              promoItem = {
+                ...raspPiDetail,
+                price: 0,
+                cartQty: 1,
+                inventoryQty: raspPiDetail.inventoryQty - 1
+              };
+
+              promoItems.push(promoItem);
+            }
+          }
         }
       }
     }

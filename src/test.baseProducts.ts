@@ -1,3 +1,5 @@
+// Seeded products for prototype environment
+
 interface IDbBaseProduct {
   sku: string;
   name: string;

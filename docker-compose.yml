@@ -9,8 +9,8 @@ services:
     restart: unless-stopped
     depends_on:
       - mysql
-    volumes:
-      - ./:/app # Only during development
+    # volumes:
+    #  - ./:/app # Only during development
     environment:
       NODE_ENV: development
       EXPRESS_SESSION_SECRET: "keyboard cat"
@@ -20,7 +20,7 @@ services:
       MYSQL_PASSWORD: example
       MYSQL_HOST: mysql
       MYSQL_PORT: 3306
-    command: ["npm", "run", "build:watch"]
+    # command: ["npm", "run", "build:watch"]
     networks:
       - lana-service-network
     ports:

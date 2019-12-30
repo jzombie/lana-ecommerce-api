@@ -235,13 +235,13 @@ class Cart {
 
     let subtotal = 0;
     baseItems.forEach((item) => {
-      subtotal += roundMoney(item.price * item.cartQty);
+      subtotal += item.price * item.cartQty;
     });
     promoItems.forEach((item) => {
-      subtotal += roundMoney(item.price * item.cartQty);
+      subtotal += item.price * item.cartQty;
     });
 
-    return subtotal;
+    return roundMoney(subtotal);
   }
 
   /**

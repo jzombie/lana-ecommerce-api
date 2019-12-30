@@ -3,6 +3,10 @@ import logger from "../logger";
 import { getModels } from "../sequelize";
 import Product, { IProductDetail } from "./Product";
 
+interface ICartItem extends IProductDetail {
+  cartQty: number;
+}
+
 class Cart {
   protected uuid: string;
   protected sequelizeCartModel: any;
@@ -17,27 +21,29 @@ class Cart {
     this.sequelizeCartProductModel = cart_product;
   }
 
-  public async addItem(sku: string, qty: number = 1): Promise<void> {
+  public async addItem(sku: string, newQty: number = 1): Promise<void> {
     const product = new Product(sku);
     const productDbId = await product.fetchDbId();
     const cartDbId = await this.fetchDbId();
 
-    const cartBaseItems = await this.fetchBaseItems();
-    const { cartQty = 0 } = cartBaseItems.find((cartItem: any) => cartItem.sku === sku) || {};
+    const cartBaseItems: ICartItem[] = await this.fetchBaseItems();
+    // Where cartQty is how many are currently in the cart before adding
+    const { cartQty = 0 } = cartBaseItems.find((cartItem: ICartItem) => cartItem.sku === sku) || {};
 
     // Prevent cart quantity from being greater than inventory quantity
     const { inventoryQty } = await product.fetchDetail();
-    if (qty + cartQty > inventoryQty) {
-      if (inventoryQty - cartQty > 0) {
-        qty = inventoryQty - cartQty;
+
+    if (newQty + cartQty > inventoryQty) {
+      const adjustedNewQty: number = inventoryQty - cartQty;
+      if (adjustedNewQty > 0) {
+        newQty = adjustedNewQty;
       } else {
         throw new Error(`Cannot add additional items: ${sku}`);
       }
     }
 
-    // TODO: Take inventoryQty into consideration before trying to add
-
-    for (let i = 0; i < qty; i++) {
+    // For each new item, add it to the cart as a new row
+    for (let i = 0; i < newQty; i++) {
       await this.sequelizeCartProductModel.create({
         product_id: productDbId,
         cart_id: cartDbId
@@ -77,7 +83,7 @@ class Cart {
   /**
    * Retrieves items, not including automatically added promotions.
    */
-  public async fetchBaseItems(): Promise<any> {
+  public async fetchBaseItems(): Promise<ICartItem[]> {
     const cartDbId = await this.fetchDbId();
     const results: Array<{ product_id: number }> = await this.sequelizeCartProductModel.findAll({
       raw: true,
@@ -95,14 +101,21 @@ class Cart {
       products.map(async (product) => await product.fetchDetail())
     );
 
-    const ret: Array<{ sku: string, name: string, price: number, inventoryQty: number, cartQty: number }> = [];
+    const ret: ICartItem[] = [];
 
     for (const productDetail of productDetails) {
-      const matched = ret.find((a) => productDetail.sku === a.sku);
+      const matched = ret.find((retProductDetail) => productDetail.sku === retProductDetail.sku);
+
       if (matched) {
+        // Update matched item w/ updated cartQty and inventoryQty
+
         matched.cartQty++;
         matched.inventoryQty--;
       } else {
+        // Pull item from stock and add into cart
+        // Note: The actual inventory qty stored in the database will not be
+        // updated until the purchase is made
+
         const { sku, name, price, inventoryQty } = productDetail;
         ret.push({
           sku,

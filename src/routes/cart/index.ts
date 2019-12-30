@@ -17,7 +17,7 @@ router.get("/", async (req: express.Request, res: express.Response) => {
 router.post("/:sku", async (req: express.Request, res: express.Response) => {
   handleCartRoute(req, res, async (): Promise<void> => {
     const cart = new Cart(req.session.id);
-    const { sku, qty } = req.params;
+    const { sku } = req.params;
     await cart.addItem(sku, 1);
   });
 });

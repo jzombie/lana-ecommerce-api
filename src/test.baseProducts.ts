@@ -1,5 +1,3 @@
-import { IProductDetail } from "./classes/Product";
-
 interface IDbBaseProduct {
   sku: string;
   name: string;
